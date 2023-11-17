@@ -5,6 +5,7 @@
     - [Quickstart](./getting-started/quickstart.md)
     - [Longer start](./getting-started/longer-start.md)
 - [Reverse Engineering](./reverse-engineering/index.md)
+    - [Radio](./reverse-engineering/radio.md)
 - [Map Editor](./map-editor/index.md)
     - [Heightmap](./map-editor/heightmap.md)
 - [Tooling](./tooling/index.md)
