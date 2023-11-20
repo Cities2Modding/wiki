@@ -4,6 +4,8 @@
 - [Getting Started](./getting-started/index.md)
     - [Quickstart](./getting-started/quickstart.md)
     - [Longer start](./getting-started/longer-start.md)
+- [Guides](./guides/index.md)
+    - [Map Editor Usage With MOOB](./guides/map-editor.md)
 - [Reverse Engineering](./reverse-engineering/index.md)
     - [Radio](./reverse-engineering/radio.md)
 - [Map Editor](./map-editor/index.md)
