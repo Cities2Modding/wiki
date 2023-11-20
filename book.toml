@@ -4,3 +4,7 @@ language = "en"
 multilingual = false
 src = "src"
 title = "Cities 2 Modding Wiki"
+
+[output.html]
+git-repository-url = "https://github.com/Cities2Modding/wiki"
+edit-url-template = "https://github.com/Cities2Modding/wiki/edit/master/{path}"
