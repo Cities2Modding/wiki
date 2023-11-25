@@ -4,7 +4,7 @@
 
 First, a short list of definitions:
 
-- ECS - Entity Component System - Software architecture for decoupled design, better memory access patterns and making paralism easy
+- ECS - Entity Component System - Software architecture for decoupled design, better memory access patterns and making parallelism easy
 - Entity - An ID representing *something* in a game, like the player's in game character
 - Component - A carrier of data, attached to the Entity. Like the character's health, or sprite position.
 - System - Queries for Components, and reads/mutates them. Behaviour like "When poisoned, drain health".
