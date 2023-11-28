@@ -21,6 +21,7 @@
         - [System](./reference/ecs/system.md)
         - [Query](./reference/ecs/query.md)
         - [Phase](./reference/ecs/phase.md)
+        - [World](./reference/ecs/world.md)
 - [Map Editor]()
     - [Heightmap]()
 - [Tooling]()
