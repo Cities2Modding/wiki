@@ -70,6 +70,8 @@ A UI ECS System should extend from `UISystemBase`, which helps to manage the bin
 
 UI Systems should be included at the `UIUpdate` Phase.
 
+Make sure to call `base.OnCreate();` as otherwise your [Bindings](../reference/game-ui/gettervaluebinding.md) might not work
+
 Example:
 
 ```csharp
