@@ -23,6 +23,7 @@
         - [Query](./reference/ecs/query.md)
         - [Phase](./reference/ecs/phase.md)
         - [World](./reference/ecs/world.md)
+        - [Archetype](./reference/ecs/archetype.md)
 - [Map Editor]()
     - [Heightmap]()
 - [Tooling]()

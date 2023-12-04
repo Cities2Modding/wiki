@@ -8,6 +8,38 @@ This will give us an idea of how mods are meant to be written for CS2.
 This is of course subject to change once the official modding platform arrives. It's only here to give a start and some idea of what to expect.
 </div>
 
+Demonstrated concepts:
+
+- `IMod` - The official modding API for declaring mods
+    - `OnCreateWorld` - The way for mod authors to add their own custom [System](../reference/ecs/system.md) to the [World](../reference/ecs/world.md)
+    - `OnDispose` - The way for mods to unload themselves
+    - `OnLoad` - Maybe called when the mod is included into the runtime, but before [World](../reference/ecs/world.md) has been created
+- `DeltaTimePrintSystem : GameSystemBase` - Basic usage on how to setup your own [System](../reference/ecs/system.md)
+    - This system just prints Delta Time on each tick
+    - `OnCreate` - Called when the [System](../reference/ecs/system.md) is initially created
+    - `OnUpdate` - Called for each tick in [World](../reference/ecs/world.md)
+- `PrintPopulationSystem : GameSystemBase` - A more advanced demonstration [System](../reference/ecs/system.md)
+    - This [System](../reference/ecs/system.md) includes running a Job, doing Queries and Burst compilation
+    - Gets reference to another [System](../reference/ecs/system.md) via `World.GetOrCreateSystemManaged`
+    - Setups a [Query](../reference/ecs/query.md) for future use via `GetEntityQuery`
+    - Creates a new `NativeArray` with the results from executing the Job
+    - `OnUpdate` triggers `CountPopulationJob` once every 128 frames
+        - The data passed to the job is:
+            - The [Query](../reference/ecs/query.md) made into a temporary `NativeArray<ArchetypeChunk>`'
+            - Unsure what `GetBufferTypeHandle<HouseholdCitizen>(true)` actually does but it seems to find the Type of a HouseholdCitizen
+            - Same for the `GetComponentTypeHandle`
+            - `GetComponentLookup<HealthProblem>(true)` seems to be getting a specific [Component](../reference/ecs/component.md) belonging to the current Entity
+        - Finally the job is scheduled with `Dependency = popJob.Schedule()`
+        - Unsure what `CompleteDependency()` does but probably related to dependencies between jobs?
+- `CountPopulationJob : IJob` - A Unity Job that gets runs in parallel to other jobs, and in a worker thread
+    - Keeps track of Chunks via a `NativeArray<ArchetypeChunk>` which is readonly
+    - Has more of the `BufferTypeHandle` and `ComponentTypeHandle`
+    - Also does lookups with `ComponentLookup` for `Citizen` and `HealthProblem`
+    - Keeps state via `m_Result` which is a `NativeArray` of `int`
+- `TestModSystem : GameSystemBase` is a [System](../reference/ecs/system.md) for triggering `TestJob`
+- `TestJob : IJob` 
+    - Seems to just increment the items by their index
+
 ### `ModPostProcessor.Resources.Mod.cs`
 
 <details>
@@ -231,6 +263,74 @@ namespace ModSample
     }
 }
 ```
+</details>
+
+#### Line-by-line explanation
+
+<details>
+
+<summary>Expand</summary>
+
+```csharp
+public class TestMod : IMod { ... }
+```
+A class implementing the `IMod` interface, which is the entry point for a mod in Cities Skylines 2. It contains methods for lifecycle events like loading and disposing the mod.
+
+```csharp
+public void OnCreateWorld(UpdateSystem updateSystem) { ... }
+```
+A method in `TestMod` that gets called during the creation of the game world. It registers various systems to update during the game simulation phase.
+
+```csharp
+public partial class DeltaTimePrintSystem : GameSystemBase { ... }
+```
+A basic ECS (Entity Component System) system extending from `GameSystemBase`. It's responsible for printing the time delta between game updates.
+
+```csharp
+public partial class PrintPopulationSystem : GameSystemBase { ... }
+```
+An ECS system that calculates and prints the population. It uses a custom job (`CountPopulationJob`) to count the population in an efficient, multi-threaded manner.
+
+```csharp
+private SimulationSystem m_SimulationSystem;
+```
+A field in `PrintPopulationSystem`, referencing the game's simulation system to access game state information.
+
+```csharp
+private EntityQuery m_HouseholdQuery;
+```
+An `EntityQuery` in `PrintPopulationSystem` used to query entities that represent households in the game.
+
+```csharp
+[BurstCompile]
+```
+An attribute indicating that the following method or job should be compiled using Unity's Burst compiler for high-performance, highly optimized native code.
+
+```csharp
+public struct CountPopulationJob : IJob { ... }
+```
+A struct implementing the `IJob` interface, representing a parallel job in Unity's ECS for counting the population. It utilizes Burst compilation for performance optimization.
+
+```csharp
+ComponentLookup<T> m_Citizens;
+```
+A field in `CountPopulationJob` that provides access to ECS components of type `T` (here, `Citizen`), enabling efficient component data retrieval within a job.
+
+```csharp
+public partial class TestModSystem : GameSystemBase { ... }
+```
+Another ECS system part of the mod, demonstrating custom logic within the ECS framework. It includes a custom job for demonstration purposes.
+
+```csharp
+public struct TestJob : IJob { ... }
+```
+A struct implementing the `IJob` interface for a simple job example, modifying an array within the ECS framework.
+
+```csharp
+NativeArray<int> m_Array;
+```
+A field in `TestModSystem`, representing a native array used in ECS for high-performance operations. It's used here to store and manipulate data in the custom job.
+
 </details>
 
 ### `ModPostProcessor.Resources.Configuration.csproj`

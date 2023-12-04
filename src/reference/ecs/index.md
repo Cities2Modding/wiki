@@ -6,6 +6,9 @@ For a beginners introduction to ECS and how Cities: Skylines 2 uses ECS, please 
 - [Component](./component.md)
 - [System](./system.md)
 - [Query](./query.md)
+- [World](./world.md)
+- [Phase](./phase.md)
+- [Archetype](./archetype.md)
 
 Basic architecture:
 
