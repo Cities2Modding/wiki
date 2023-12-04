@@ -11,6 +11,7 @@
     - [Radio](./reverse-engineering/radio.md)
     - [Game UI](./reverse-engineering/game-ui.md)
     - [Systems](./reverse-engineering/systems.md)
+    - [Official Mod Example](./reverse-engineering/official-mod-example.md)
 - [Reference](./reference/index.md)
     - [Game UI](./reference/game-ui/index.md)
         - [GetterValueBinding](./reference/game-ui/gettervaluebinding.md)
