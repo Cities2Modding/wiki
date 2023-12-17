@@ -27,6 +27,9 @@ jobs:
           # This assumes your book is in the root of your repository.
           # Just add a `cd` here if you need to change to another directory.
           mdbook build
+      - name: Copy CNAME
+        run: |
+          cp CNAME wiki/CNAME
       - name: Setup Pages
         uses: actions/configure-pages@v2
       - name: Upload artifact
