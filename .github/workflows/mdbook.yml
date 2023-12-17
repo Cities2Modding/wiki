@@ -29,7 +29,7 @@ jobs:
           mdbook build
       - name: Copy CNAME
         run: |
-          cp CNAME wiki/CNAME
+          ls
       - name: Setup Pages
         uses: actions/configure-pages@v2
       - name: Upload artifact
